@@ -30,5 +30,8 @@ dist/
 *.egg-info/
 
 index1.html
-app.py
+app2.py
 test.py
+render.yaml
+ChatterBot.pem
+requirement.txt
