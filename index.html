@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chatbot Interface</h1>
+        <div id="chat">
+            <div id="messages"></div>
+            <div id="input">
+                <input type="text" id="query" placeholder="Type your message...">
+                <button id="send">Send</button>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2024 Yash Gupta.All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendButton = document.getElementById('send');
+            const queryInput = document.getElementById('query');
+            const messagesDiv = document.getElementById('messages');
+            const chatDiv = document.getElementById('chat');
+
+            sendButton.addEventListener('click', sendMessage);
+            queryInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            async function sendMessage() {
+                const query = queryInput.value;
+                if (query.trim() === '') return;
+
+                // Display user message
+                appendMessage('You', query, 'user-message');
+                queryInput.value = '';
+
+                // Disable input while waiting for response
+                queryInput.disabled = true;
+                sendButton.disabled = true;
+                chatDiv.classList.add('waiting');
+
+                try {
+                    // Send query to API
+                    const response = await fetch('http://localhost:5000/query', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query }),
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+
+                    // Display bot response
+                    appendMessage('Bot', result.answer, 'bot-message');
+                } catch (error) {
+                    console.error('Error:', error);
+                    appendMessage('Bot', 'Error: Unable to get response from the server.', 'bot-message');
+                } finally {
+                    // Re-enable input
+                    queryInput.disabled = false;
+                    sendButton.disabled = false;
+                    chatDiv.classList.remove('waiting');
+                    queryInput.focus();
+                }
+            }
+
+            function appendMessage(sender, text, className) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${className}`;
+                messageDiv.textContent = `${sender}: ${text}`;
+                messagesDiv.appendChild(messageDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

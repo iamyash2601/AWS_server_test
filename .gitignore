@@ -1,0 +1,34 @@
+
+
+# Environment files
+.env
+
+# Virtual environments
+venv/
+
+# Compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Log files and temporary files
+*.log
+*.tmp
+*.bak
+.DS_Store
+*.swp
+*.swo
+
+# IDEs
+.idea/
+.vscode/
+
+# Build and distribution files
+build/
+dist/
+*.egg-info/
+
+index1.html
+app.py
+test.py

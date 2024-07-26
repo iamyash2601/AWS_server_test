@@ -1,0 +1,9 @@
+Flask
+cohere
+Flask-CORS
+python-dotenv
+pinecone-client
+langchain-cohere
+langchain-pinecone
+langchain-core
+Gunicorn
