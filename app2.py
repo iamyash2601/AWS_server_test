@@ -90,6 +90,3 @@ def query():
         "answer": answer,
         "source_documents": source_documents
     })
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
